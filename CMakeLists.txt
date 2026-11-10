@@ -46,7 +46,9 @@ pico_enable_stdio_usb(rasp_vibr 1)
 
 # Add the standard library to the build
 target_link_libraries(rasp_vibr
-        pico_stdlib)
+        pico_stdlib
+        hardware_timer
+        hardware_adc)
 
 # Add the standard include files to the build
 target_include_directories(rasp_vibr PRIVATE
