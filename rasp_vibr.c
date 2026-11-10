@@ -7,25 +7,25 @@
 
 #define tomb_meret 50
 
+//állapotgéphez
 enum allapotok {
     Init,
     Meres,
     BLU_kapcs
 };
-
-
 volatile enum allapotok akt_allapot = Init;
+
 volatile uint16_t tomb_A[tomb_meret];
 volatile uint16_t tomb_B[tomb_meret];
 
 volatile uint16_t* akt_tomb = tomb_A;
 volatile uint8_t szamlalo = 0;
 
-
+//adc beállítása
 void adc_inditas() {
     adc_init();
-    adc_gpio_init(26); // Initialize GPIO 26 for ADC input
-    adc_select_input(0); // Select ADC input channel 0
+    adc_gpio_init(26); 
+    adc_select_input(0); 
 }
 
 
@@ -36,10 +36,7 @@ bool adc_olvasas(struct repeating_timer *t) {
     akt_tomb[szamlalo] = result;
     szamlalo++;
 
-
-
-
-    if(szamlalo >= tomb_meret) {
+     if(szamlalo >= tomb_meret) {
         szamlalo = 0;
 
         multicore_fifo_push_blocking((uint16_t)akt_tomb);
@@ -56,7 +53,11 @@ bool adc_olvasas(struct repeating_timer *t) {
     return true; 
 }
 
+void Core1_entry() {
 
+
+
+}
 
 
 
@@ -80,7 +81,7 @@ int main()
             break;
 
             case Meres:
-                multicore_launch_core1();
+                multicore_launch_core1(Core1_entry);
 
                 struct repeating_timer timer;
                 add_repeating_timer_ms(-200, adc_olvasas, NULL,&timer );
