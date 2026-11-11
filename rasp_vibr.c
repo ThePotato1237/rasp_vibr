@@ -84,7 +84,7 @@ int main()
                 multicore_launch_core1(Core1_entry);
 
                 struct repeating_timer timer;
-                add_repeating_timer_ms(-200, adc_olvasas, NULL,&timer );
+                add_repeating_timer_us(-200, adc_olvasas, NULL,&timer );
 
             break;
     
