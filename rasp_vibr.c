@@ -35,7 +35,7 @@ bool adc_olvasas(struct repeating_timer *t) {
      if(szamlalo >= tomb_meret) {
         szamlalo = 0;
 
-        multicore_fifo_push_blocking((uint16_t)akt_tomb);
+        multicore_fifo_push_blocking((uint32_t)akt_tomb);
 
         if(akt_tomb == tomb_A) {
             akt_tomb = tomb_B;
