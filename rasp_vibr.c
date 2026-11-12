@@ -4,6 +4,9 @@
 #include "hardware/gpio.h"
 #include "hardware/adc.h"
 #include "pico/multicore.h"
+#include "pico/cyw43_arch.h"
+#include "pico/btstack_cyw43.h"
+
 
 #define tomb_meret 50
 
@@ -11,7 +14,7 @@
 enum allapotok {
     Init,
     Meres,
-    BLU_kapcs
+    BLE_kapcs
 };
 volatile enum allapotok akt_allapot = Init;
 
@@ -59,6 +62,22 @@ void Core1_entry() {
 
 }
 
+void ble_init(){
+
+   if (cyw43_arch_init())
+    {
+       
+        return;
+    }
+
+    l2cap_init();
+    sm_init();
+    
+     hci_event_callback_registration.callback = &packet_handler;
+    hci_add_event_handler(&hci_event_callback_registration);
+
+}
+
 
 
 int main()
@@ -70,12 +89,15 @@ int main()
             case Init:
             stdio_init_all();
             adc_inditas();
+            ble_init();
 
             sleep_ms(1000);
-            akt_allapot = BLU_kapcs;
+
+            akt_allapot = BLE_kapcs;
+
             break;
 
-            case BLU_kapcs:
+            case BLE_kapcs:
 
 
             break;

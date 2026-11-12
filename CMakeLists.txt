@@ -50,7 +50,8 @@ target_link_libraries(rasp_vibr
         hardware_timer
         hardware_adc
         pico_btstack_ble
-        pico_btstack_cyw43)
+        pico_btstack_cyw43
+        pico_cyw43_arch_none)
 
 # Add the standard include files to the build
 target_include_directories(rasp_vibr PRIVATE
